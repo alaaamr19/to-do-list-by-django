@@ -1,0 +1,42 @@
+{% load static %}
+<script src="{% static 'tasks/jquery-3.4.1.min.js'%}"></script>
+<script src="{% static 'tasks/bootstrap/js/bootstrap.js' %}"></script>
+<script src="{% static 'tasks/todo.js'%}"></script>
+<link href="{% static 'tasks/bootstrap/css/bootstrap.css' %}" rel="stylesheet" />
+<link href="{% static 'tasks/style.css' %}" rel="stylesheet" />
+
+
+
+<div class="container">
+    <div class="d-inline-flex">
+        <div ondrop="dropped(event)" ondragover="overdrag(event)" id="active" class="bg-light">
+            <div class="header bg-danger">ACTIVE</div>
+
+        </div>
+        <div ondrop="dropped(event)" ondragover="overdrag(event)" id="doing" class="bg-light">
+            <div class="table-dark header">DOING</div>
+        </div>
+        <div ondrop="dropped(event)" ondragover="overdrag(event)" id="done" class="bg-light">
+            <div class="table-dark header">DONE</div>
+        </div>
+        </div>
+
+ <div >
+            <div class="form-group">
+                <input type="text" id="task" class="form-control" placeholder="Enter the title of task">
+            </div>
+            <button id="add" class="btn btn-primary" onclick="addTask()">Add</button>
+ </div>
+</div>
+
+{% if latest_tasks%}
+    <ul>
+    {% for task in latest_tasks %}
+       <div  draggable='true'  ondragend="enddrag(event)" ondragstart="startdrag(event)" scope='row' class='status status-{{task.status}}' id="{{task.id}}" style="display:none">
+           <h4>{{ task.title }}</h4>
+       </div >
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No tasks are available.</p>
+{% endif %}
