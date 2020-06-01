@@ -1,5 +1,5 @@
-#TO DO List
-####a list of tasks that need to be done.
+# TO DO List.
+#### a list of tasks that need to be done.
 ## APIs
 
 ##### Get all Todos
