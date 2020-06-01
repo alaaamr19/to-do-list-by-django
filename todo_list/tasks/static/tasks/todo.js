@@ -85,14 +85,12 @@ function dropped(e) {
 
     }
     else if(e.target.id=="done"){
-        console.log(task,e.target)
         e.target.appendChild(task);
         //send ajax call to update status as Done
         changeStatus(data,3);
 
     }
-    else {
-        console.log(task,e.target)
+    else if(e.target.id=="active") {
         e.target.appendChild(task);
         //send ajax call to update status as Active
         changeStatus(data,1);
