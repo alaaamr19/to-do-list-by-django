@@ -3,17 +3,21 @@
     margin: 0;
 }
 
+#activeheader{
+    background-color:rgba(255,0,0,0.6)
+}
+#doingheader{
+    background-color:rgba(0,255,100,0.6)
+}
+
 #active, #doing, #done{
-    width: 30%;
-    min-height: 500px;
     overflow-y: auto;
-    margin: 20px ;
     -webkit-box-flex:1;
     text-align: center;
 
 }
-img:hover{
-    transform: scale(2) rotate(360deg);
+.status:hover{
+    transform:rotate(5deg);
 
 }
 .header{

@@ -1,29 +1,28 @@
-import datetime
-
-from django.http import HttpResponse, Http404, JsonResponse
-from django.shortcuts import render, get_object_or_404
-from django.utils import timezone
-
+from django.http import Http404, JsonResponse
+from django.shortcuts import render
+from django.core.paginator import Paginator
 from .models import Task
 
 
+# Function to get todos and render the Home page.
 def index(request):
-    latest_tasks = Task.objects.filter(pub_date__gte=timezone.now() - datetime.timedelta(days=7))
-    context = {'latest_tasks': latest_tasks}
-    return render(request, 'tasks/index.html', context)
+    task_list = Task.objects.all().order_by('-pub_date')
+    # Show 10 contacts per page.
+    paginator = Paginator(task_list, 10)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+    return render(request, 'tasks/index.html', {'page_obj': page_obj})
 
 
+# Function to add tasks to your List.
 def add(request):
-    data = {"exist": Task.objects.filter(title=request.GET['title']).exists()}
-    if data["exist"]:
-        data["message"]= "you already add this task"
-    else:
-        task = Task.objects.create(title=request.GET['title'])
-        data["message"]="task added successfully"
-    # if request.is_ajax and request.method == "GET":
-    return JsonResponse(data)
+    task = Task.objects.create(title=request.GET['title'])
+    task_id = task.id
+    date = task.pub_date
+    return JsonResponse({"id": task_id, "date": date})
 
 
+# Function to change status of task.
 def change_status(request, task_id):
     try:
         task = Task.objects.get(pk=task_id)
@@ -31,5 +30,4 @@ def change_status(request, task_id):
         task.save()
     except Task.DoesNotExist:
         raise Http404("task does not exist")
-    return HttpResponse("You're add task")
-    # return render(request, 'task/detail.html', {'task': task})
+    return JsonResponse({"success": "success"})
